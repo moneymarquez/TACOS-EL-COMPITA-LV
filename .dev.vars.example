@@ -1,0 +1,4 @@
+# Copy to .dev.vars for local development (never committed).
+ADMIN_PASSWORD=change-me
+# Optional locally. Without it, inquiries store but email is marked "not configured".
+RESEND_API_KEY=

@@ -1,0 +1,43 @@
+{
+  // El Compita - Cloudflare Worker with static assets, D1, and R2.
+  // Deploy: npm run deploy   (see README.md for the full first-time checklist)
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "el-compita",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    // "/" is not a static file - the Worker renders it from D1.
+    // Anything in ./public (CSS, JS, /admin, favicon) is served directly.
+    "not_found_handling": "none",
+    "html_handling": "auto-trailing-slash"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "el-compita",
+      // Replace with the id printed by: wrangler d1 create el-compita
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "PHOTOS",
+      // Create with: wrangler r2 bucket create el-compita-photos
+      "bucket_name": "el-compita-photos"
+    }
+  ],
+  "vars": {
+    // Public, non-secret settings. Safe to commit.
+    "SITE_URL": "https://el-compita.workers.dev",
+    "SITE_TIMEZONE": "America/Denver",
+    "RESEND_FROM_EMAIL": "El Compita Website <onboarding@resend.dev>"
+  },
+  "observability": { "enabled": true }
+  // Secrets (set with `wrangler secret put NAME`, never committed):
+  //   ADMIN_PASSWORD   - the owner's /admin password (required for the admin to work)
+  //   RESEND_API_KEY   - from resend.com > API Keys (required for inquiry emails;
+  //                      without it inquiries are still stored and shown in /admin)
+}

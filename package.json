@@ -1,0 +1,21 @@
+{
+  "name": "el-compita-site",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "El Compita taco trucks - one-page marketing site + owner admin, on Cloudflare Workers, D1, and R2.",
+  "scripts": {
+    "dev": "npm run db:local && wrangler dev --port 8787",
+    "db:local": "wrangler d1 migrations apply el-compita --local && wrangler d1 execute el-compita --local --file=seed/seed.sql",
+    "db:remote": "wrangler d1 migrations apply el-compita --remote && wrangler d1 execute el-compita --remote --file=seed/seed.sql",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && wrangler deploy --dry-run --outdir=dist",
+    "deploy": "npm run typecheck && wrangler deploy",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260907.1",
+    "typescript": "~7.0.2",
+    "wrangler": "^4.129.0"
+  }
+}
