@@ -3,7 +3,7 @@ import { loadSiteData } from './db';
 import { renderHome } from './render/home';
 import { handleInquiry } from './api/public';
 import { handleAdminApi } from './api/admin';
-import { HttpError, json, todayIn } from './util';
+import { HttpError, json, nowHHMMIn, todayIn } from './util';
 
 const SECURITY_HEADERS: Record<string, string> = {
   'content-security-policy': "default-src 'self'; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'",
@@ -33,7 +33,7 @@ export default {
           : q === 'error'
             ? { kind: 'error' as const, msg: url.searchParams.get('msg') || 'Something went wrong. Please try again.' }
             : null;
-        const html = renderHome(data, env, today, flash);
+        const html = renderHome(data, env, today, nowHHMMIn(env.SITE_TIMEZONE), flash);
         return withHeaders(new Response(html, {
           headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' },
         }), SECURITY_HEADERS);

@@ -34,7 +34,7 @@ one login, one CLI, no second vendor, no extra API keys beyond the email sender.
   public/site.css|js    public styles + lightbox/form enhancement
   public/admin.html|css|js   the owner admin (plain JS)
   scripts/smoke.mjs     end-to-end test against a running dev server
-  design/               drop the approved design export here (see design/README.md)
+  design/               the approved Claude Design export (DOM) + porting notes
 ```
 
 ## Local run (one command)
@@ -115,8 +115,11 @@ Admin → Text & contact → "Send new inquiries to this email".
   shows "Address not posted yet" instead of a broken button.
 - **Menu**: categories (add/rename/reorder/delete) and items (name, description, price,
   available / sold out / hidden, reorder).
-- **Photos**: upload (resized in the browser to 1600px), edit description, reorder, delete.
-- **Text & contact**: hero headline/subline, story, catering copy, phone (click-to-call),
+- **Photos**: upload (resized in the browser to 1600px), edit description, choose where it
+  shows (gallery grid, or the hero / location / menu / story / catering / contact picture
+  spot from the design), reorder, delete.
+- **Text & contact**: hero headline + orange accent line, subline, section headlines for
+  location / menu / story, menu intro, story text and pull quote, catering copy, phone (click-to-call),
   email, Instagram link, service area, footer hours, Google rating + review count + link,
   truck names/on-off, notification email.
 - **Reviews**: quotes with name, stars, source; reorder.
@@ -124,12 +127,14 @@ Admin → Text & contact → "Send new inquiries to this email".
 
 ## Content the owner still needs to supply
 
-The brief gave no phone, email, Instagram handle, addresses, prices, photos, logo,
+The brief gave no phone, email, Instagram handle, addresses, prices, photos,
 Google rating, or review quotes. None were invented. Each renders as a labeled
-"coming soon" state until entered in `/admin`. The hero headline, story, and
-catering copy are short drafts written only from facts in the brief (steak cut daily,
-Mexican Coke, Vegas roots, two trucks, "a taco stand in every city") and should be
-reviewed by the owner.
+"coming soon" state until entered in `/admin`. The design's photography was
+AI-generated mockup imagery and is not shipped; the owner's real photos fill those
+spots. Seeded copy (hero, section headlines, story, pull quote, catering) comes from
+the approved design, adapted to the spec's two-truck West Valley / West Jordan
+geography, and the "$3 a taco" price line should be confirmed by the owner. See
+`design/README.md` for every place the spec overrode the design.
 
 ## Security notes
 

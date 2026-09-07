@@ -100,9 +100,11 @@
 <template id="tpl-photos">
   <h2>Photos</h2>
   <p class="muted">Photos are resized on your phone before upload (max 1600px), so uploads are quick and the site stays fast. JPG, PNG, or WebP.</p>
+  <p class="muted">Each photo goes either in the <strong>gallery grid</strong> or in one of the design's picture spots: <strong>hero</strong> (big background at the top), <strong>location</strong>, <strong>menu</strong>, <strong>story</strong>, <strong>catering</strong>, or <strong>contact</strong>. Only the first photo assigned to a spot is used. The first gallery photo is the large tile.</p>
   <form id="photo-form" class="card grid">
     <label class="field field--full"><span>Image</span><input name="file" type="file" accept="image/jpeg,image/png,image/webp" required></label>
-    <label class="field field--full"><span>Describe the photo (shown to screen readers and search engines)</span><input name="alt_text" required maxlength="200" placeholder="Three asada tacos with lime on the truck counter"></label>
+    <label class="field"><span>Describe the photo (shown to screen readers and search engines)</span><input name="alt_text" required maxlength="200" placeholder="Three asada tacos with lime on the truck counter"></label>
+    <label class="field"><span>Where it shows</span><select name="placement" id="placement-select"></select></label>
     <div class="field--full row"><button class="btn btn--primary" type="submit" id="photo-submit">Upload photo</button></div>
   </form>
   <div id="photo-list" class="photo-grid"></div>
@@ -112,10 +114,18 @@
   <h2>Text &amp; contact</h2>
   <form id="settings-form" class="card grid">
     <h3 class="field--full">Hero</h3>
-    <label class="field field--full"><span>Headline</span><input name="hero_headline" maxlength="120"></label>
-    <label class="field field--full"><span>Subline</span><input name="hero_subline" maxlength="160"></label>
+    <label class="field"><span>Headline (white line)</span><input name="hero_headline" maxlength="120"></label>
+    <label class="field"><span>Headline, orange line (e.g. "$3 a taco.")</span><input name="hero_headline_accent" maxlength="60"></label>
+    <label class="field field--full"><span>Subline</span><input name="hero_subline" maxlength="200"></label>
+    <h3 class="field--full">Where We Are Today</h3>
+    <label class="field field--full"><span>Section headline</span><input name="location_headline" maxlength="120"></label>
+    <h3 class="field--full">Menu</h3>
+    <label class="field"><span>Section headline</span><input name="menu_headline" maxlength="120"></label>
+    <label class="field"><span>Short intro under the headline</span><input name="menu_lede" maxlength="200"></label>
     <h3 class="field--full">Our Story</h3>
+    <label class="field field--full"><span>Section headline</span><input name="story_headline" maxlength="120"></label>
     <label class="field field--full"><span>Story text (blank line between paragraphs)</span><textarea name="story_text" rows="6" maxlength="5000"></textarea></label>
+    <label class="field field--full"><span>Pull quote (shown in big type, attributed to the owner)</span><input name="story_quote" maxlength="120"></label>
     <h3 class="field--full">Catering</h3>
     <label class="field field--full"><span>Catering copy</span><textarea name="catering_copy" rows="4" maxlength="2000"></textarea></label>
     <h3 class="field--full">Contact (public)</h3>

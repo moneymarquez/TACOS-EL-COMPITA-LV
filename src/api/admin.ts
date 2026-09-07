@@ -1,6 +1,6 @@
 import type { Env } from '../env';
 import type { Inquiry, MenuCategory, MenuItem, Photo, Review, ScheduleEntry, Truck } from '../db';
-import { SETTING_KEYS, loadSettings } from '../db';
+import { PLACEMENTS, SETTING_KEYS, loadSettings } from '../db';
 import { checkPassword, clearSessionCookie, issueSessionCookie, requireAuth } from '../auth';
 import { HttpError, bad, isHHMM, isHttpUrl, isIsoDate, json, parsePriceToCents, str, todayIn } from '../util';
 
@@ -191,9 +191,12 @@ route('POST', '/photos', async (req, env) => {
   return json(row, 201);
 });
 route('PUT', '/photos/:id', async (req, env, p) => {
-  const alt_text = str((await body(req)).alt_text, 200);
+  const b = await body(req);
+  const alt_text = str(b.alt_text, 200);
+  const placement = str(b.placement, 20) || 'gallery';
   if (!alt_text) bad('Description is required.');
-  await env.DB.prepare('UPDATE photos SET alt_text = ?1 WHERE id = ?2').bind(alt_text, Number(p.id)).run();
+  if (!(PLACEMENTS as readonly string[]).includes(placement)) bad('Bad placement.');
+  await env.DB.prepare('UPDATE photos SET alt_text = ?1, placement = ?2 WHERE id = ?3').bind(alt_text, placement, Number(p.id)).run();
   return json({ ok: true });
 });
 route('DELETE', '/photos/:id', async (_req, env, p) => {

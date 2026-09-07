@@ -46,7 +46,7 @@ p { margin:0 0 .75rem; } .muted { color:var(--muted); } .error { color:var(--err
 .photo-grid { display:grid; gap:.6rem; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); }
 .photo { display:grid; gap:.4rem; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:.5rem; }
 .photo img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:6px; }
-.photo input { font-size:14px; min-height:38px; padding:.4rem .5rem; }
+.photo input, .photo select { font-size:14px; min-height:38px; padding:.4rem .5rem; width:100%; color:var(--cream); background:var(--bg); border:1px solid #4a3a2c; border-radius:8px; }
 .status { font-size:.8rem; padding:.1rem .45rem; border-radius:4px; background:#3a2a20; color:var(--cream-2); display:inline-block; }
 .status.sent { color:var(--ok); } .status.failed, .status.not_configured { color:var(--err); }
 .empty { border:1px dashed #4a3a2c; border-radius:10px; padding:1rem; color:var(--muted); }

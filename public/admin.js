@@ -182,6 +182,13 @@
   }
 
   /* ── photos ──────────────────────────────────────────────────── */
+  var PLACEMENTS = [['gallery', 'Gallery grid'], ['hero', 'Hero background (top of page)'], ['location', 'Where We Are photo'], ['menu', 'Menu photo'], ['story', 'Our Story photo'], ['catering', 'Catering photo'], ['contact', 'Contact photo']];
+  function placementSelect(value) {
+    var sel = el('select', { 'aria-label': 'Where this photo shows' });
+    PLACEMENTS.forEach(function (p) { sel.appendChild(el('option', { value: p[0], text: p[1] })); });
+    sel.value = value || 'gallery';
+    return sel;
+  }
   function resizeImage(file, max) {
     return new Promise(function (resolve, reject) {
       var url = URL.createObjectURL(file); var img = new Image();
@@ -199,6 +206,7 @@
   }
   function photos() {
     var form = $('#photo-form');
+    $('#placement-select').replaceWith(placementSelect('gallery'));
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var file = form.elements.file.files[0]; if (!file) return;
@@ -206,7 +214,8 @@
       resizeImage(file, 1600).then(function (r) {
         var fd = new FormData();
         fd.append('file', r.blob, 'photo.jpg'); fd.append('alt_text', form.elements.alt_text.value); fd.append('width', r.width); fd.append('height', r.height);
-        return api('POST', '/photos', fd, true);
+        var placement = form.querySelector('select').value;
+        return api('POST', '/photos', fd, true).then(function (row) { return placement === 'gallery' ? row : api('PUT', '/photos/' + row.id, { alt_text: row.alt_text, placement: placement }); });
       }).then(function () { toast('Photo uploaded'); form.reset(); load(); }).catch(fail)
         .then(function () { submit.disabled = false; submit.textContent = 'Upload photo'; });
     });
@@ -217,10 +226,12 @@
         if (!rows.length) { grid.appendChild(el('div', { class: 'empty', text: 'No photos yet. The site shows "Photos coming soon" until you upload one.' })); return; }
         rows.forEach(function (p, idx) {
           var alt = el('input', { value: p.alt_text, maxlength: '200', 'aria-label': 'Photo description' });
-          alt.addEventListener('change', function () { api('PUT', '/photos/' + p.id, { alt_text: alt.value }).then(function () { toast('Description saved'); }).catch(fail); });
+          var place = placementSelect(p.placement);
+          var save = function () { api('PUT', '/photos/' + p.id, { alt_text: alt.value, placement: place.value }).then(function () { toast('Photo saved'); }).catch(fail); };
+          alt.addEventListener('change', save); place.addEventListener('change', save);
           grid.appendChild(el('div', { class: 'photo' }, [
             el('img', { src: '/photos/' + p.r2_key, alt: p.alt_text, loading: 'lazy' }),
-            alt,
+            alt, place,
             el('div', { class: 'actions' }, moveButtons(rows, idx, function (ids) { api('POST', '/photos/reorder', { ids: ids }).then(load).catch(fail); }).concat([
               btn('Delete', function () { confirmDo('Delete this photo?', function () { api('DELETE', '/photos/' + p.id).then(load).catch(fail); }); }, 'btn--danger')
             ]))

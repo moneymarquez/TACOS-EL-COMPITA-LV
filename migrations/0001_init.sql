@@ -45,6 +45,9 @@ CREATE TABLE IF NOT EXISTS photos (
   r2_key        TEXT    NOT NULL UNIQUE,
   content_type  TEXT    NOT NULL,
   alt_text      TEXT    NOT NULL,
+  -- where the photo shows: the gallery grid, or one of the design's image slots
+  placement     TEXT    NOT NULL DEFAULT 'gallery'
+                CHECK (placement IN ('gallery','hero','location','menu','story','catering','contact')),
   width         INTEGER,
   height        INTEGER,
   sort_order    INTEGER NOT NULL DEFAULT 0,

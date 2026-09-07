@@ -10,8 +10,10 @@ export interface MenuItem {
   id: number; category_id: number; name: string; description: string;
   price_cents: number | null; availability: 'available' | 'sold_out' | 'hidden'; sort_order: number;
 }
+export const PLACEMENTS = ['gallery', 'hero', 'location', 'menu', 'story', 'catering', 'contact'] as const;
+export type Placement = (typeof PLACEMENTS)[number];
 export interface Photo {
-  id: number; r2_key: string; content_type: string; alt_text: string;
+  id: number; r2_key: string; content_type: string; alt_text: string; placement: Placement;
   width: number | null; height: number | null; sort_order: number;
 }
 export interface Review { id: number; reviewer_name: string; quote: string; star_rating: number; source: string; sort_order: number }
@@ -21,7 +23,8 @@ export interface Inquiry {
 }
 
 export const SETTING_KEYS = [
-  'hero_headline', 'hero_subline', 'story_text', 'catering_copy',
+  'hero_headline', 'hero_headline_accent', 'hero_subline', 'location_headline', 'menu_headline', 'menu_lede',
+  'story_headline', 'story_text', 'story_quote', 'catering_copy',
   'phone', 'email', 'instagram_url', 'service_area', 'hours_summary',
   'google_rating', 'google_review_count', 'google_reviews_url', 'notify_email',
 ] as const;
